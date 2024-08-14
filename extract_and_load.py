@@ -113,6 +113,8 @@ cursor.execute("""
     );
 """)
 
+print("Tables created successfully!")
+
 # Populate the locations table with data
 for location in locations:
     cursor.execute("""
@@ -135,6 +137,7 @@ for location_id, holiday_data in all_holiday_data.items():
             holiday['public']
         ))
 
+print("Tables populated successfully!")
 
 # Commit the transaction to save changes
 conn.commit()
@@ -142,5 +145,3 @@ conn.commit()
 # Close the cursor and connection
 cursor.close()
 conn.close()
-
-print("Tables created successfully!")
