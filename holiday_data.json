@@ -1,0 +1,409 @@
+{
+    "9415913d-fffa-41f9-9323-6d62e6100a31": {
+        "status": 200,
+        "warning": "These results do not include state and province holidays. For more information, please visit https://holidayapi.com/docs",
+        "requests": {
+            "used": 19,
+            "available": 9981,
+            "resets": "2024-09-01 00:00:00"
+        },
+        "holidays": [
+            {
+                "name": "New Year's Day",
+                "date": "2023-01-01",
+                "observed": "2023-01-01",
+                "public": true,
+                "country": "NL",
+                "uuid": "02b782ca-15a6-4ba3-b647-e2abbcb1c5d6",
+                "weekday": {
+                    "date": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    },
+                    "observed": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    }
+                }
+            },
+            {
+                "name": "March Equinox",
+                "date": "2023-03-20",
+                "observed": "2023-03-20",
+                "public": false,
+                "country": "NL",
+                "uuid": "4576f8ec-f82c-4122-8275-73f7c6ae41e4",
+                "weekday": {
+                    "date": {
+                        "name": "Monday",
+                        "numeric": "1"
+                    },
+                    "observed": {
+                        "name": "Monday",
+                        "numeric": "1"
+                    }
+                }
+            },
+            {
+                "name": "Good Friday",
+                "date": "2023-04-07",
+                "observed": "2023-04-07",
+                "public": true,
+                "country": "NL",
+                "uuid": "99c05e62-5dfe-445a-9383-3fdf473e1356",
+                "weekday": {
+                    "date": {
+                        "name": "Friday",
+                        "numeric": "5"
+                    },
+                    "observed": {
+                        "name": "Friday",
+                        "numeric": "5"
+                    }
+                }
+            },
+            {
+                "name": "Easter",
+                "date": "2023-04-09",
+                "observed": "2023-04-09",
+                "public": true,
+                "country": "NL",
+                "uuid": "206d71bc-0501-4608-933b-3f5c1ee3d20d",
+                "weekday": {
+                    "date": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    },
+                    "observed": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    }
+                }
+            },
+            {
+                "name": "Easter Monday",
+                "date": "2023-04-10",
+                "observed": "2023-04-10",
+                "public": true,
+                "country": "NL",
+                "uuid": "20816196-42dc-447c-b02f-3071e9296280",
+                "weekday": {
+                    "date": {
+                        "name": "Monday",
+                        "numeric": "1"
+                    },
+                    "observed": {
+                        "name": "Monday",
+                        "numeric": "1"
+                    }
+                }
+            },
+            {
+                "name": "Royal Day",
+                "date": "2023-04-27",
+                "observed": "2023-04-27",
+                "public": true,
+                "country": "NL",
+                "uuid": "e76d4908-0169-4920-a70b-a5fe0aaed06a",
+                "weekday": {
+                    "date": {
+                        "name": "Thursday",
+                        "numeric": "4"
+                    },
+                    "observed": {
+                        "name": "Thursday",
+                        "numeric": "4"
+                    }
+                }
+            },
+            {
+                "name": "Commemoration of the Dead",
+                "date": "2023-05-04",
+                "observed": "2023-05-04",
+                "public": false,
+                "country": "NL",
+                "uuid": "e7caec4c-3474-4349-970f-49890ea1e6d2",
+                "weekday": {
+                    "date": {
+                        "name": "Thursday",
+                        "numeric": "4"
+                    },
+                    "observed": {
+                        "name": "Thursday",
+                        "numeric": "4"
+                    }
+                }
+            },
+            {
+                "name": "Liberation Day",
+                "date": "2023-05-05",
+                "observed": "2023-05-05",
+                "public": true,
+                "country": "NL",
+                "uuid": "f41586f2-362e-4e9e-80f9-28a815990995",
+                "weekday": {
+                    "date": {
+                        "name": "Friday",
+                        "numeric": "5"
+                    },
+                    "observed": {
+                        "name": "Friday",
+                        "numeric": "5"
+                    }
+                }
+            },
+            {
+                "name": "Mother's Day",
+                "date": "2023-05-14",
+                "observed": "2023-05-14",
+                "public": false,
+                "country": "NL",
+                "uuid": "7b8e5dca-fecb-4813-8bd8-c52d3f9b9673",
+                "weekday": {
+                    "date": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    },
+                    "observed": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    }
+                }
+            },
+            {
+                "name": "Feast of the Ascension of Jesus Christ",
+                "date": "2023-05-18",
+                "observed": "2023-05-18",
+                "public": true,
+                "country": "NL",
+                "uuid": "1446ceeb-c3c7-438d-9f30-9dd20e33cd85",
+                "weekday": {
+                    "date": {
+                        "name": "Thursday",
+                        "numeric": "4"
+                    },
+                    "observed": {
+                        "name": "Thursday",
+                        "numeric": "4"
+                    }
+                }
+            },
+            {
+                "name": "Pentecost",
+                "date": "2023-05-28",
+                "observed": "2023-05-28",
+                "public": true,
+                "country": "NL",
+                "uuid": "2e0cb95d-2f33-422f-afe5-870738920729",
+                "weekday": {
+                    "date": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    },
+                    "observed": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    }
+                }
+            },
+            {
+                "name": "Pentecost Monday",
+                "date": "2023-05-29",
+                "observed": "2023-05-29",
+                "public": true,
+                "country": "NL",
+                "uuid": "3edf8a91-f7f9-47bf-8969-ffc5397bbd02",
+                "weekday": {
+                    "date": {
+                        "name": "Monday",
+                        "numeric": "1"
+                    },
+                    "observed": {
+                        "name": "Monday",
+                        "numeric": "1"
+                    }
+                }
+            },
+            {
+                "name": "Father's Day",
+                "date": "2023-06-18",
+                "observed": "2023-06-18",
+                "public": false,
+                "country": "NL",
+                "uuid": "c936c641-d865-49c4-a115-30b7575c354e",
+                "weekday": {
+                    "date": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    },
+                    "observed": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    }
+                }
+            },
+            {
+                "name": "June Solstice",
+                "date": "2023-06-21",
+                "observed": "2023-06-21",
+                "public": false,
+                "country": "NL",
+                "uuid": "1efb403e-1333-437c-932e-1ba6edf5a780",
+                "weekday": {
+                    "date": {
+                        "name": "Wednesday",
+                        "numeric": "3"
+                    },
+                    "observed": {
+                        "name": "Wednesday",
+                        "numeric": "3"
+                    }
+                }
+            },
+            {
+                "name": "September Equinox",
+                "date": "2023-09-23",
+                "observed": "2023-09-23",
+                "public": false,
+                "country": "NL",
+                "uuid": "71eb54b5-06c6-4aa7-86d3-1506a8fa7e46",
+                "weekday": {
+                    "date": {
+                        "name": "Saturday",
+                        "numeric": "6"
+                    },
+                    "observed": {
+                        "name": "Saturday",
+                        "numeric": "6"
+                    }
+                }
+            },
+            {
+                "name": "Saint Nicholas' Eve",
+                "date": "2023-12-05",
+                "observed": "2023-12-05",
+                "public": false,
+                "country": "NL",
+                "uuid": "32601bc4-0811-4b7b-ad86-a79846861998",
+                "weekday": {
+                    "date": {
+                        "name": "Tuesday",
+                        "numeric": "2"
+                    },
+                    "observed": {
+                        "name": "Tuesday",
+                        "numeric": "2"
+                    }
+                }
+            },
+            {
+                "name": "Saint Nicholas' Day",
+                "date": "2023-12-06",
+                "observed": "2023-12-06",
+                "public": false,
+                "country": "NL",
+                "uuid": "011dea38-047d-4336-898e-a6208c16ebb7",
+                "weekday": {
+                    "date": {
+                        "name": "Wednesday",
+                        "numeric": "3"
+                    },
+                    "observed": {
+                        "name": "Wednesday",
+                        "numeric": "3"
+                    }
+                }
+            },
+            {
+                "name": "December Solstice",
+                "date": "2023-12-22",
+                "observed": "2023-12-22",
+                "public": false,
+                "country": "NL",
+                "uuid": "af8288c3-3272-48ed-9514-6388d8e43ae8",
+                "weekday": {
+                    "date": {
+                        "name": "Friday",
+                        "numeric": "5"
+                    },
+                    "observed": {
+                        "name": "Friday",
+                        "numeric": "5"
+                    }
+                }
+            },
+            {
+                "name": "Christmas Eve",
+                "date": "2023-12-24",
+                "observed": "2023-12-24",
+                "public": false,
+                "country": "NL",
+                "uuid": "e3bd0410-4ce5-4b8e-9527-57a0d32ab0b2",
+                "weekday": {
+                    "date": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    },
+                    "observed": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    }
+                }
+            },
+            {
+                "name": "Christmas Day",
+                "date": "2023-12-25",
+                "observed": "2023-12-25",
+                "public": true,
+                "country": "NL",
+                "uuid": "36c875bc-ac7c-4426-bc56-c7e9f663fb2f",
+                "weekday": {
+                    "date": {
+                        "name": "Monday",
+                        "numeric": "1"
+                    },
+                    "observed": {
+                        "name": "Monday",
+                        "numeric": "1"
+                    }
+                }
+            },
+            {
+                "name": "Boxing Day",
+                "date": "2023-12-26",
+                "observed": "2023-12-26",
+                "public": true,
+                "country": "NL",
+                "uuid": "03fdd6c3-e145-487d-a252-3e86db00e970",
+                "weekday": {
+                    "date": {
+                        "name": "Tuesday",
+                        "numeric": "2"
+                    },
+                    "observed": {
+                        "name": "Tuesday",
+                        "numeric": "2"
+                    }
+                }
+            },
+            {
+                "name": "New Year's Eve",
+                "date": "2023-12-31",
+                "observed": "2023-12-31",
+                "public": false,
+                "country": "NL",
+                "uuid": "227eeaf5-66e8-4e8a-aad8-b4c02b84bd35",
+                "weekday": {
+                    "date": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    },
+                    "observed": {
+                        "name": "Sunday",
+                        "numeric": "7"
+                    }
+                }
+            }
+        ]
+    }
+}
