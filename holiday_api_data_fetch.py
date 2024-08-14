@@ -1,5 +1,13 @@
 import requests
 import json
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from the .env file
+load_dotenv()
+
+# Fetch the database URL from the .env file
+DATABASE_URL = os.getenv("HOLIDAY_API_KEY")
 
 # Define your API key
 API_KEY = '553d0f97-886b-4d71-ab8b-d06a763cea6c'
