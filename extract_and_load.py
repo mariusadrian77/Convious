@@ -1,13 +1,29 @@
 import requests
+import psycopg2
 import json
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 import os
 
 # Load environment variables from the .env file
 load_dotenv()
 
 # Fetch the database URL from the .env file
-DATABASE_URL = os.getenv("HOLIDAY_API_KEY")
+HOLIDAYAPI_URL = os.getenv("HOLIDAY_API_KEY")
+
+# Fetch the database URL from the .env file
+POSTGRESQL_URL = os.getenv("POSTGRESQL_KEY")
+
+# Parse the URL to extract connection parameters
+postgressql_url = urlparse(POSTGRESQL_URL)
+
+conn_params = {
+    'dbname': postgressql_url.path[1:],    # Extracts the database name after '/'
+    'user': postgressql_url.username,       # Extracts the username
+    'password': postgressql_url.password,   # Extracts the password
+    'host': postgressql_url.hostname,       # Extracts the host
+    'port': postgressql_url.port            # Extracts the port
+}
 
 # List of locations with their corresponding country codes and subdivision codes
 locations = [
@@ -27,12 +43,12 @@ locations = [
 ]
 
 # Define the base URL for the API
-url = "https://holidayapi.com/v1/holidays"
+holidayapi_url = "https://holidayapi.com/v1/holidays"
 
 # Function to fetch holiday data for a specific location
 def fetch_holiday_data(country_code, year, subdivision_code=None):
     params = {
-        'key': DATABASE_URL,
+        'key': HOLIDAYAPI_URL,
         'country': country_code,
         'year': year,
         'pretty': 'true'  # Optional: format the response for readability
@@ -40,7 +56,7 @@ def fetch_holiday_data(country_code, year, subdivision_code=None):
     if subdivision_code:
         params['subdivision'] = subdivision_code
     
-    response = requests.get(url, params=params)
+    response = requests.get(holidayapi_url, params=params)
     if response.status_code == 200:
         return response.json()
     else:
@@ -64,10 +80,67 @@ for location in locations:
     if data:
         all_holiday_data[location_id] = data
         # Optional: Print data for each location
-        print(json.dumps(data, indent=4))
-
-# Optionally save the fetched data to a file for later use
-with open('holiday_data.json', 'w') as f:
-    json.dump(all_holiday_data, f, indent=4)
+        # print(json.dumps(data, indent=4))
 
 print("Holiday data fetching complete!")
+
+
+# Establish a connection to the database
+conn = psycopg2.connect(**conn_params)
+
+# Create a cursor object to execute SQL queries
+cursor = conn.cursor()
+
+# Example: Create a table for holiday data (adjust column names and types as per your needs)
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS holidays (
+        id SERIAL PRIMARY KEY,
+        location_id UUID NOT NULL,
+        date DATE NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        observed DATE NOT NULL,
+        public BOOLEAN NOT NULL
+    );
+""")
+
+# Example: Create a table for location data (adjust column names and types as per your needs)
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS locations (
+        location_id UUID PRIMARY KEY,
+        country_code VARCHAR(10) NOT NULL,
+        subdivision_code VARCHAR(10) NOT NULL,
+        name VARCHAR(255) NOT NULL
+    );
+""")
+
+# Populate the locations table with data
+for location in locations:
+    cursor.execute("""
+        INSERT INTO locations (location_id, country_code, subdivision_code, name)
+        VALUES (%s, %s, %s, %s)
+        ON CONFLICT (location_id) DO NOTHING;
+    """, (location['location_id'], location['country_code'], location['subdivision_code'], location.get('name', '')))
+
+# Populate the holidays table with the data
+for location_id, holiday_data in all_holiday_data.items():
+    for holiday in holiday_data['holidays']:
+        cursor.execute("""
+            INSERT INTO holidays (location_id, date, name, observed, public)
+            VALUES (%s, %s, %s, %s, %s);
+        """, (
+            location_id,
+            holiday['date'],
+            holiday['name'],
+            holiday['observed'],
+            holiday['public']
+        ))
+
+
+# Commit the transaction to save changes
+conn.commit()
+
+# Close the cursor and connection
+cursor.close()
+conn.close()
+
+print("Tables created successfully!")

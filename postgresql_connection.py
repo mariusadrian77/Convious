@@ -7,10 +7,10 @@ import os
 load_dotenv()
 
 # Fetch the database URL from the .env file
-DATABASE_URL = os.getenv("POSTGRESQL_KEY")
+POSTGRESQL_URL = os.getenv("POSTGRESQL_KEY")
 
 # Parse the URL to extract connection parameters
-url = urlparse(DATABASE_URL)
+url = urlparse(POSTGRESQL_URL)
 
 conn_params = {
     'dbname': url.path[1:],    # Extracts the database name after '/'
@@ -33,7 +33,7 @@ cursor.execute("""
         location_id UUID NOT NULL,
         date DATE NOT NULL,
         name VARCHAR(255) NOT NULL,
-        observed BOOLEAN NOT NULL,
+        observed DATE NOT NULL,
         public BOOLEAN NOT NULL
     );
 """)
