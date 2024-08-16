@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 import os
 
+# VARIABLES
+
 # Load environment variables from the .env file
 load_dotenv()
 
@@ -27,23 +29,26 @@ conn_params = {
 
 # List of locations with their corresponding country codes and subdivision codes
 locations = [
-    {"location_id": "9415913d-fffa-41f9-9323-6d62e6100a31", "country_code": "NL", "subdivision_code": "NL-FL"},
-    # {"location_id": "432d10d2-1a7c-4bbd-abd2-85075fb19c71", "country_code": "NL", "subdivision_code": "NL-GR"},
-    # {"location_id": "a2d0d6fd-3a18-4f58-ac36-d2e56bf71a46", "country_code": "GB", "subdivision_code": "GB-NSM"},
-    # {"location_id": "ab5df8c0-dfe7-4ca3-a9e4-c77f93e551a7", "country_code": "NL", "subdivision_code": "NL-ZH"},
-    # {"location_id": "fdbf55b4-1b97-43a8-a096-a71d0b9d6940", "country_code": "GB", "subdivision_code": "GB-WLL"},
-    # {"location_id": "d9a11093-b1a4-4c1a-9e2a-7cc951b55a32", "country_code": "NL", "subdivision_code": "NL-DR"},
-    # {"location_id": "4f2c9d63-73b3-40f4-892d-136599854b87", "country_code": "NL", "subdivision_code": "NL-FR"},
-    # {"location_id": "423ff765-83ac-472c-9ef7-b3a592696711", "country_code": "NL", "subdivision_code": "NL-UT"},
-    # {"location_id": "5770db11-e7bf-4044-b54c-d49f69e947ec", "country_code": "GB", "subdivision_code": "GB-SOM"},
-    # {"location_id": "d70aed5a-3960-44fa-9c08-f725c2b03ce8", "country_code": "NL", "subdivision_code": "NL-NH"},
-    # {"location_id": "e826584c-c32b-4ca1-835f-b7d7416f2958", "country_code": "NL", "subdivision_code": "NL-LI"},
-    # {"location_id": "e40a0514-03e7-4d28-b7be-38c18a5ae73c", "country_code": "GB", "subdivision_code": "GB-WRT"},
-    # {"location_id": "4c8eb5ba-0140-4b48-924b-899112abe562", "country_code": "NL", "subdivision_code": "NL-GE"},
+    {"location_id": "9415913d-fffa-41f9-9323-6d62e6100a31", "country_code": "NL", "subdivision_code": "NL-FL", "name": "Flevoland"},
+    # {"location_id": "432d10d2-1a7c-4bbd-abd2-85075fb19c71", "country_code": "NL", "subdivision_code": "NL-GR", "name": "Groningen"},
+    # {"location_id": "a2d0d6fd-3a18-4f58-ac36-d2e56bf71a46", "country_code": "GB", "subdivision_code": "GB-NSM", "name": "North Somerset"},
+    # {"location_id": "ab5df8c0-dfe7-4ca3-a9e4-c77f93e551a7", "country_code": "NL", "subdivision_code": "NL-ZH", "name": "South Holland"},
+    # {"location_id": "fdbf55b4-1b97-43a8-a096-a71d0b9d6940", "country_code": "GB", "subdivision_code": "GB-WLL", "name": "Wells"},
+    # {"location_id": "d9a11093-b1a4-4c1a-9e2a-7cc951b55a32", "country_code": "NL", "subdivision_code": "NL-DR", "name": "Drenthe"},
+    # {"location_id": "4f2c9d63-73b3-40f4-892d-136599854b87", "country_code": "NL", "subdivision_code": "NL-FR", "name": "Friesland"},
+    # {"location_id": "423ff765-83ac-472c-9ef7-b3a592696711", "country_code": "NL", "subdivision_code": "NL-UT", "name": "Utrecht"},
+    # {"location_id": "5770db11-e7bf-4044-b54c-d49f69e947ec", "country_code": "GB", "subdivision_code": "GB-SOM", "name": "Somerset"},
+    # {"location_id": "d70aed5a-3960-44fa-9c08-f725c2b03ce8", "country_code": "NL", "subdivision_code": "NL-NH", "name": "North Holland"},
+    # {"location_id": "e826584c-c32b-4ca1-835f-b7d7416f2958", "country_code": "NL", "subdivision_code": "NL-LI", "name": "Limburg"},
+    # {"location_id": "e40a0514-03e7-4d28-b7be-38c18a5ae73c", "country_code": "GB", "subdivision_code": "GB-WRT", "name": "Warrington"},
+    # {"location_id": "4c8eb5ba-0140-4b48-924b-899112abe562", "country_code": "NL", "subdivision_code": "NL-GE", "name": "Gelderland"}
 ]
 
 # Define the base URL for the API
 holidayapi_url = "https://holidayapi.com/v1/holidays"
+
+
+# FUNCTIONS
 
 # Function to fetch holiday data for a specific location
 def fetch_holiday_data(country_code, year, subdivision_code=None):
@@ -62,69 +67,27 @@ def fetch_holiday_data(country_code, year, subdivision_code=None):
     else:
         print(f"Failed to fetch data for {country_code}-{subdivision_code}. Status code: {response.status_code}")
         return None
-
-# Fetch and print holiday data for all locations
-year = 2023  # Specify the year for which you want to fetch holiday data
-
-all_holiday_data = {}
-
-for location in locations:
-    country_code = location["country_code"]
-    subdivision_code = location["subdivision_code"]
-    location_id = location["location_id"]
     
-    print(f"Fetching holiday data for {country_code}-{subdivision_code}...")
-    # Free version ONLY allows to fetch data for the previous year
-    data = fetch_holiday_data(country_code, year, subdivision_code)
-    
-    if data:
-        all_holiday_data[location_id] = data
-        # Optional: Print data for each location
-        # print(json.dumps(data, indent=4))
+# Function to upsert locations into the database
+def upsert_location(cursor, location):
+    cursor.execute("""
+        INSERT INTO location_mapping (location_id, country_code, subdivision_code, name)
+        VALUES (%s, %s, %s, %s)
+        ON CONFLICT (location_id) DO UPDATE SET
+            country_code = EXCLUDED.country_code,
+            subdivision_code = EXCLUDED.subdivision_code,
+            name = EXCLUDED.name;
+    """, (location['location_id'], location['country_code'], location['subdivision_code'], location['name']))
 
-print("Holiday data fetching complete!")
-
-
-# Establish a connection to the database
-conn = psycopg2.connect(**conn_params)
-
-# Create a cursor object to execute SQL queries
-cursor = conn.cursor()
-
-# Example: Create a table for holiday data (adjust column names and types as per your needs)
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS holidays (
-        id SERIAL PRIMARY KEY,
-        location_id UUID NOT NULL,
-        date DATE NOT NULL,
-        name VARCHAR(255) NOT NULL,
-        observed DATE NOT NULL,
-        public BOOLEAN NOT NULL
-    );
-""")
-
-# Example: Create a table for location data (adjust column names and types as per your needs)
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS locations (
-        location_id UUID PRIMARY KEY,
-        country_code VARCHAR(10) NOT NULL,
-        subdivision_code VARCHAR(10) NOT NULL,
-        name VARCHAR(255) NOT NULL
-    );
-""")
-
-print("Tables created successfully!")
-
-# Populate the locations table with data
-for location in locations:
+def insert_location_data(cursor, location):
     cursor.execute("""
         INSERT INTO locations (location_id, country_code, subdivision_code, name)
         VALUES (%s, %s, %s, %s)
         ON CONFLICT (location_id) DO NOTHING;
     """, (location['location_id'], location['country_code'], location['subdivision_code'], location.get('name', '')))
 
-# Populate the holidays table with the data
-for location_id, holiday_data in all_holiday_data.items():
+# Function to insert holiday data into the database
+def insert_holiday_data(cursor, location_id, holiday_data):
     for holiday in holiday_data['holidays']:
         cursor.execute("""
             INSERT INTO holidays (location_id, date, name, observed, public)
@@ -137,7 +100,47 @@ for location_id, holiday_data in all_holiday_data.items():
             holiday['public']
         ))
 
-print("Tables populated successfully!")
+
+# CODE
+
+# Fetch and print holiday data for all locations
+# Free version ONLY allows to fetch data for the previous year
+year = 2023 
+
+# Establish a connection to the database
+conn = psycopg2.connect(**conn_params)
+
+# Create a cursor object to execute SQL queries
+cursor = conn.cursor()
+
+print("Server connection initialized!")
+
+
+for location in locations:
+    country_code = location["country_code"]
+    subdivision_code = location["subdivision_code"]
+    location_id = location["location_id"]
+    
+    print(f"Fetching holiday data for {country_code}-{subdivision_code}...")
+    holiday_data = fetch_holiday_data(country_code, year, subdivision_code)
+    print("Holiday data fetching complete!")
+
+    
+    if holiday_data:
+        # Upsert location data
+        upsert_location(cursor, location)
+        print("Location data upserted successfully!")
+
+        # Insert holiday data
+        insert_holiday_data(cursor, location_id, holiday_data)
+        print("Holiday data inserted successfully!")
+
+        # Insert location_data
+        insert_location_data(cursor, location)
+        print("Location data inserted successfully!")
+
+
+print("Location data updated and holiday data inserted successfully!")
 
 # Commit the transaction to save changes
 conn.commit()

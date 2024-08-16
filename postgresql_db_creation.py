@@ -48,11 +48,31 @@ cursor.execute("""
     );
 """)
 
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS location_mapping (
+        location_id UUID PRIMARY KEY,
+        country_code VARCHAR(3) NOT NULL,
+        subdivision_code VARCHAR(10),
+        name VARCHAR(255),
+        active BOOLEAN DEFAULT TRUE 
+    );
+""")
+
+# Commit the transaction to save changes
+conn.commit()
+
+print("Tables created successfully!")
+
+# Indexing queries to improve performance
+cursor.execute("CREATE INDEX IF NOT EXISTS idx_location_id ON holidays(location_id);")
+cursor.execute("CREATE INDEX IF NOT EXISTS idx_date ON holidays(date);")
+cursor.execute("CREATE INDEX IF NOT EXISTS idx_country_subdivision ON locations(country_code, subdivision_code);")
+
+print("Tables indexed successfully!")
+
 # Commit the transaction to save changes
 conn.commit()
 
 # Close the cursor and connection
 cursor.close()
 conn.close()
-
-print("Tables created successfully!")
