@@ -73,6 +73,13 @@ print("Tables indexed successfully!")
 # Commit the transaction to save changes
 conn.commit()
 
+# cursor.execute("DROP TABLE IF EXISTS holidays;")
+# cursor.execute("DROP TABLE IF EXISTS location_mapping;")
+# cursor.execute("DROP TABLE IF EXISTS locations;")  
+
+# # Commit the changes
+# conn.commit()
+
 # Close the cursor and connection
 cursor.close()
 conn.close()
