@@ -29,15 +29,80 @@ Personally, I have been using Snowflake for the past year or so. And I consider 
 Now it has come to the schema design used in the data warehouse. I would opt for the start of snowflake schema. Events can be quite complex, but without knowing the actual data structure of the project, I would go for the less complex star schema because it is well-suited for analytical tasks and simplifies querying and reporting. It is organized around a central fact table (transactional data), surrounded by multiple dimensional ones (descripitve attributes). The structure is easy to use for BI tools which makes it very digestible. This is due to the fact that the data is typically denormalized, where everything is stored in one place (the fact table). This eliminates the need for complex joins across multiple tables because those tables are interconnected. Furthermore, the star schema is efficient for handling large datasets because the dimension tables are generally smaller and more manageable, without changing too frequently. 
 An example of star schema design for our ticket system:
 
-Fact Table: events
-This table will store all event-related data.
+### Fact Table: `events`
 
-Column Name	Data Type	Description
-event_id	UUID	Unique identifier for each event
-event_type	VARCHAR	Type of event (e.g., "ArticleAddedToCart")
-event_timestamp	TIMESTAMP	Timestamp of when the event occurred
-user_id	UUID	ID of the user associated with the event
-related_id	UUID	ID of the related entity (e.g., cart_id, ticket_id)
-version	INT	Version number for event versioning
-metadata	JSONB	JSON data with additional event-specific metadata
+The `events` table stores all event-related data.
 
+| Column Name     | Data Type     | Description                                             |
+|-----------------|---------------|---------------------------------------------------------|
+| event_id        | UUID          | Unique identifier for each event                        |
+| event_type      | VARCHAR       | Type of event (e.g., "ArticleAddedToCart")              |
+| event_timestamp | TIMESTAMP     | Timestamp of when the event occurred                    |
+| user_id         | UUID          | ID of the user associated with the event                |
+| related_id      | UUID          | ID of the related entity (e.g., cart_id, ticket_id)     |
+| version         | INT           | Version number for event versioning                     |
+| metadata        | JSONB         | JSON data with additional event-specific metadata       |
+
+#### Example Data for `events` Table:
+
+| event_id                              | event_type          | event_timestamp     | user_id                              | related_id                           | version | metadata                                                                                  |
+|---------------------------------------|---------------------|---------------------|--------------------------------------|--------------------------------------|---------|-------------------------------------------------------------------------------------------|
+| 1a2b3c4d-1234-5678-9abc-123456789abc   | ArticleAddedToCart  | 2024-08-17 10:00:00 | 123e4567-e89b-12d3-a456-426614174000 | 098f6bcd-4621-3373-8ade-4e832627b4f6 | 1       | {"article_id": "98765", "article_price": 29.99, "currency": "USD"}                        |
+| 2b3c4d5e-2234-5678-9def-223456789def   | PaymentSuccessful   | 2024-08-17 10:05:00 | 123e4567-e89b-12d3-a456-426614174000 | 678f6bcd-5621-3373-8bde-4e832627b4f7 | 1       | {"total_amount": 59.99, "currency": "USD", "payment_method": "CreditCard"}                |
+| 3c4d5e6f-3234-5678-9ghi-323456789ghi   | BarcodeScanned      | 2024-08-17 10:10:00 | 123e4567-e89b-12d3-a456-426614174000 | 543f6bcd-6621-3373-8cde-4e832627b4f8 | 2       | {"barcode_type": "QR", "scanner_location": "Entrance A"}                                  |
+
+
+### Dimension Table: `users`
+
+The `users` table stores user-related information.
+
+| Column Name  | Data Type | Description                |
+|--------------|-----------|----------------------------|
+| user_id      | UUID      | Unique identifier for users |
+| name         | VARCHAR   | Name of the user            |
+| email        | VARCHAR   | Email address of the user   |
+| country      | VARCHAR   | Country of the user         |
+
+#### Example Data for `users` Table:
+
+| user_id                               | name      | email                     | country     |
+|---------------------------------------|-----------|----------------------------|-------------|
+| 123e4567-e89b-12d3-a456-426614174000   | John Doe  | john.doe@example.com       | USA         |
+| 789e4567-e89b-12d3-a456-426614174001   | Jane Doe  | jane.doe@example.com       | Canada      |
+
+
+### Dimension Table: `tickets`
+
+The `tickets` table stores information related to tickets for events.
+
+| Column Name  | Data Type | Description                     |
+|--------------|-----------|---------------------------------|
+| ticket_id    | UUID      | Unique identifier for tickets   |
+| event_name   | VARCHAR   | Name of the event associated with the ticket |
+| ticket_price | DECIMAL   | Price of the ticket             |
+
+#### Example Data for `tickets` Table:
+
+| ticket_id                             | event_name         | ticket_price |
+|---------------------------------------|--------------------|--------------|
+| 543f6bcd-6621-3373-8cde-4e832627b4f8  | Music Concert      | 99.99        |
+| 678f6bcd-5621-3373-8bde-4e832627b4f7  | Theater Play       | 49.99        |
+
+
+### Dimension Table: `articles`
+
+The `articles` table stores information about articles (e.g., products).
+
+| Column Name  | Data Type | Description                   |
+|--------------|-----------|-------------------------------|
+| article_id   | UUID      | Unique identifier for articles|
+| article_name | VARCHAR   | Name of the article            |
+| price        | DECIMAL   | Price of the article           |
+| currency     | VARCHAR   | Currency of the price          |
+
+#### Example Data for `articles` Table:
+
+| article_id                            | article_name       | price | currency |
+|---------------------------------------|--------------------|-------|----------|
+| 98765                                 | Winter Jacket      | 29.99 | USD      |
+| 12345                                 | Running Shoes      | 59.99 | USD      |
