@@ -21,8 +21,23 @@ Events could be stored in standardized JSON format. It's flexible, easy to use a
 
 Data storage is one of the most important aspect of the system. I would consider two primary storage options: data lake and data warehouse. Data lakes are mostly used to handle large amounts of raw and unstructured data. This means that no schema needs to be predefined making it convenient to store any type of event data. That means that new fields can be added without breaking existing data. They are typically cheaper than data warehouses and more fit to large volumes of data over time. On the other hand, they don't handle complex queries very well and the lack of structure can make the data very hard to handle in terms of quality and consistency. Lastly, it requires an additional transformation step to make it suitable for analysis.
 
-Data warehouses are designed for structured data with a predefined schema. This makes complex analytical queries easier due to indexing and partitioning. They are suited for aggregating data which is often required for BI tasks and reporting. Some of them come with built-in integrations for BI tools, making it easier to showcase to clients. In return, they tend to be more expensive and computationally demanding as the volume of data grows. Although, it is possible to change schemas in a data warehouse, it can be more challenging compared to a data lake. Lastly, they are not optimized for storing unstructured data, making them less flexible.
+Data warehouses are designed for structured data with a predefined schema. This makes complex analytical queries easier due to indexing and partitioning. They are suited for aggregating data which is often required for BI tasks and reporting. Some of them come with built-in integrations for BI tools, making it easier to showcase to clients. In return, they tend to be more expensive and computationally demanding as the volume of data grows. Althought, it is possible to change schemas in a data warehouse, it can be more challenging compared to a data lake. Lastly, they are not optimized for storing unstructured data, making them less flexible.
 
-Nowadays, a combined approach is quite a common practice. I would store raw event data in a data lake, due to the vast amounts of data that might be coming in and its flexibility in adding new fields. This is ideal for data archiving and later transformations when needed for analysis. After storing raw even data, it can be processed periodically before loading it into a data warehouse. This data will have a proper structure, that allows it to be optimized for querying and analysis.
+Nowadays, a combined approach is quite a common practice. I would store raw event data in a data lake, due to the vast amounts of data that might be coming in and its flexibility in adding new fields. This is ideal for data archiving and later transformations when needed for analysis. After storing raw event data, it can be processed periodically before loading it into a data warehouse. This data will have a proper structure, that allows it to be optimized for querying and analysis. 
+Personally, I have been using Snowflake for the past year or so. And I consider it's suitable for the task at hand. It allows the user to scale storage and resources independently, it has cross-platform compatibility and it is optimized for both real-time and batch processing. In a larger team it allows accounts to share data seamlessly without moving any data. Given the multitude of clients that Convinus has, different clients might use different cloud environments and Snowflake is quite convenient in this case. There are certainly other alternatives like Amazon Redshift is the AWS ecosystem is widely used.
 
-Now it has come to the schema design used in the data warehouse.
+Now it has come to the schema design used in the data warehouse. I would opt for the start of snowflake schema. Events can be quite complex, but without knowing the actual data structure of the project, I would go for the less complex star schema because it is well-suited for analytical tasks and simplifies querying and reporting. It is organized around a central fact table (transactional data), surrounded by multiple dimensional ones (descripitve attributes). The structure is easy to use for BI tools which makes it very digestible. This is due to the fact that the data is typically denormalized, where everything is stored in one place (the fact table). This eliminates the need for complex joins across multiple tables because those tables are interconnected. Furthermore, the star schema is efficient for handling large datasets because the dimension tables are generally smaller and more manageable, without changing too frequently. 
+An example of star schema design for our ticket system:
+
+Fact Table: events
+This table will store all event-related data.
+
+Column Name	Data Type	Description
+event_id	UUID	Unique identifier for each event
+event_type	VARCHAR	Type of event (e.g., "ArticleAddedToCart")
+event_timestamp	TIMESTAMP	Timestamp of when the event occurred
+user_id	UUID	ID of the user associated with the event
+related_id	UUID	ID of the related entity (e.g., cart_id, ticket_id)
+version	INT	Version number for event versioning
+metadata	JSONB	JSON data with additional event-specific metadata
+
