@@ -81,7 +81,12 @@ def upsert_location(cursor, location):
             country_code = EXCLUDED.country_code,
             subdivision_code = EXCLUDED.subdivision_code,
             name = EXCLUDED.name;
-    """, (location['location_id'], location['country_code'], location['subdivision_code'], location['name']))
+        """, (
+            location['location_id'], 
+            location['country_code'], 
+            location['subdivision_code'], 
+            location['name']
+            ))
 
 # Function to insert holiday data into the database
 def insert_holiday_data(cursor, location_id, holiday_data):

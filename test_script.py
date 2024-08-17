@@ -1,7 +1,7 @@
 import pytest
 import requests
 from unittest.mock import Mock
-from extract_and_load import fetch_holiday_data, upsert_location, insert_holiday_data, main
+from ETL import fetch_holiday_data, upsert_location, insert_holiday_data, main
 import psycopg2
 from psycopg2 import pool
 

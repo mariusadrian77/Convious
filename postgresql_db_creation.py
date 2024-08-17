@@ -26,37 +26,34 @@ conn = psycopg2.connect(**conn_params)
 # Create a cursor object to execute SQL queries
 cursor = conn.cursor()
 
-# Example: Create a table for holiday data (adjust column names and types as per your needs)
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS holidays (
-        id SERIAL PRIMARY KEY,
-        location_id UUID NOT NULL,
-        date DATE NOT NULL,
-        name VARCHAR(255) NOT NULL,
-        observed DATE NOT NULL,
-        public BOOLEAN NOT NULL
-    );
-""")
-
 # Example: Create a table for location data (adjust column names and types as per your needs)
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS locations (
-        location_id UUID PRIMARY KEY,
-        country_code VARCHAR(3) NOT NULL,
-        subdivision_code VARCHAR(10) NOT NULL,
-        name VARCHAR(255) NOT NULL
-    );
-""")
-
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS location_mapping (
         location_id UUID PRIMARY KEY,
-        country_code VARCHAR(3) NOT NULL,
-        subdivision_code VARCHAR(10),
-        name VARCHAR(255),
-        active BOOLEAN DEFAULT TRUE 
+        country_code VARCHAR(2) NOT NULL,
+        subdivision_code VARCHAR(10) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        version INT NOT NULL,
+        UNIQUE (location_id, version)
     );
 """)
+
+# Example: Create a table for holiday data (adjust column names and types as per your needs)
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS holidays (
+        holiday_id SERIAL PRIMARY KEY,      
+        location_id UUID NOT NULL,          
+        version INT NOT NULL,               
+        date DATE NOT NULL,                 
+        name VARCHAR(255) NOT NULL,         
+        observed DATE,                      
+        public BOOLEAN NOT NULL,            
+        FOREIGN KEY (location_id, version) 
+            REFERENCES location_mapping(location_id, version) 
+            ON DELETE CASCADE                
+    );
+""")
+
 
 # Commit the transaction to save changes
 conn.commit()
@@ -64,14 +61,26 @@ conn.commit()
 print("Tables created successfully!")
 
 # Indexing queries to improve performance
-cursor.execute("CREATE INDEX IF NOT EXISTS idx_location_id ON holidays(location_id);")
-cursor.execute("CREATE INDEX IF NOT EXISTS idx_date ON holidays(date);")
-cursor.execute("CREATE INDEX IF NOT EXISTS idx_country_subdivision ON locations(country_code, subdivision_code);")
+# Indexes for the holidays table
+cursor.execute("""
+    CREATE INDEX IF NOT EXISTS idx_location_version 
+    ON holidays(location_id, version);
+""")
+cursor.execute("""
+    CREATE INDEX IF NOT EXISTS idx_date 
+    ON holidays(date);
+""")
+# Indexes for the location_mapping table
+cursor.execute("""
+    CREATE INDEX IF NOT EXISTS idx_country_subdivision 
+    ON location_mapping(country_code, subdivision_code);
+""")
 
-print("Tables indexed successfully!")
 
 # Commit the transaction to save changes
 conn.commit()
+
+print("Tables indexed successfully!")
 
 # cursor.execute("DROP TABLE IF EXISTS holidays;")
 # cursor.execute("DROP TABLE IF EXISTS location_mapping;")
@@ -79,6 +88,8 @@ conn.commit()
 
 # # Commit the changes
 # conn.commit()
+
+# print("Tables deleted successfully!")
 
 # Close the cursor and connection
 cursor.close()
