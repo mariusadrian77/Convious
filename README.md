@@ -84,7 +84,7 @@ A crucial aspect of this process is versioning, which is used to manage and trac
 
 - **Querying Current Data**: By using the `current_version` flag, the script ensures that the query will only return the latest data, providing accurate and up-to-date information.
 - **Data Consistency**: In case of multiple updates to the holiday data, versioning ensures that all changes are logged and tracked. This means that even if an update occurs after the initial data fetch, the system can still provide consistent and reliable information. In such cases where the location is removed, then the value is not in use anymore. This also accounts for changes in the location, such as the naming or codes.
-- **Historical Analysis**: Storing multiple versions allows to analyze holidays data changes over time. This can be helpful for audit purposes or for understanding the impact of changes over time, even if some of the data become obsolete.
+- **Historical Analysis**: Storing multiple versions allows to analyze holidays data changes over time. This can be helpful for other purposes (audit) or for understanding the impact of changes over time, even if some of the data become obsolete.
 
 ### Trade-offs of Versioning for Task Requirements
 
