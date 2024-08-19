@@ -84,7 +84,7 @@ A crucial aspect of this process is versioning, which is used to manage and trac
 
 - **Querying Current Data**: By using the `current_version` flag, the script ensures that the query will only return the latest data, providing accurate and up-to-date information.
 - **Data Consistency**: In case of multiple updates to the holiday data, versioning ensures that all changes are logged and tracked. This means that even if an update occurs after the initial data fetch, the system can still provide consistent and reliable information. In such cases where the location is removed, then the value is not in use anymore. This also accounts for changes in the location, such as the naming or codes.
-- **Historical Analysis**: Storing multiple versions allows to analyze holidays data changes over time. This can be helpful for audit purposes or for understanding the impact of changes over time, even if some of the data become obsolete.
+- **Historical Analysis**: Storing multiple versions allows to analyze holidays data changes over time. This can be helpful for other purposes (audit) or for understanding the impact of changes over time, even if some of the data becomes obsolete.
 
 ### Trade-offs of Versioning for Task Requirements
 
@@ -96,7 +96,7 @@ A crucial aspect of this process is versioning, which is used to manage and trac
 
 ### Example Workflow
 
-When the script runs for the first time, it fetches holiday data for a given year and five locations, assigns version 1 to all records, and sets `current_version` to `TRUE`. The next time the script runs, it increments the version number (version 2), sets `current_version` to `FALSE` for the old records, and inserts the new data with `current_version` set to `TRUE`. The third time the script runs, only four of the initial five locations are fetched, because one of them got deleted. The version number is incremented (version 3) and the `current_version` is set to `FALSE` for all records for four of the five locations, whereas the fifth one still has its current location set to `TRUE`. In addition, the active flag in the holiday_mapping table becomes `FALSE` for the fifth location.
+When the script runs for the first time, it fetches holiday data for a given year and five locations, assigns version 1 to all records, and sets `current_version` to `TRUE`. The next time the script runs, it increments the version number (version 2), sets `current_version` to `FALSE` for the old records, and inserts the new data with `current_version` set to `TRUE`. The third time the script runs, only four of the initial five locations are fetched, because one of them got deleted. The version number is incremented (version 3) and the `current_version` is set to `FALSE` for all records for four of the five locations, whereas the fifth one still has its `current_version` set to `TRUE`. In addition, the active flag in the holiday_mapping table becomes `FALSE` for the fifth location.
 
 Lastly, when querying the holidays, the script will automatically filter out the old data by selecting only records where `current_version` is `TRUE`, ensuring the user always sees the latest version.
 
@@ -132,7 +132,7 @@ Designed for structured data with a predefined schema. This makes complex analyt
 4. **Combined Approach:**
 Nowadays, a combined approach is quite a common practice. I would store raw event data in a data lake, due to the vast amounts of data that might be coming in and its flexibility in adding new fields. This is ideal for data archiving and later transformations when needed for analysis. After storing raw event data, it can be processed periodically before loading it into a data warehouse. This data will have a proper structure, that allows it to be optimized for querying and analysis. 
 
-I have been using Snowflake for the past year or so. And I consider it's suitable for the task at hand. It allows the user to scale storage and resources independently, it has cross-platform compatibility and it is optimized for both real-time and batch processing. In a larger team, it allows accounts to share data seamlessly without moving any data. Given the multitude of clients that Convinus has, different clients might use different cloud environments and Snowflake is quite convenient in this case. There are certainly other alternatives like Amazon Redshift is the AWS ecosystem is widely used.
+I have been using Snowflake for the past year or so. And I consider it's suitable for the task at hand. It allows the user to scale storage and resources independently, it has cross-platform compatibility and it is optimized for both real-time and batch processing. In a larger team, it allows accounts to share data seamlessly without moving any data. Given the multitude of clients that Convious has, different clients might use different cloud environments and Snowflake is quite convenient in this case. There are certainly other alternatives like Amazon Redshift is the AWS ecosystem is widely used.
 
 ### Schema Design
 
