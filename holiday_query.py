@@ -11,12 +11,13 @@ POSTGRESQL_URL = os.getenv("POSTGRESQL_KEY")
 
 # Parse the database URL to extract connection parameters
 postgressql_url = urlparse(POSTGRESQL_URL)
+# Extract the database credentials
 conn_params = {
-    'dbname': postgressql_url.path[1:],    # Extracts the database name after '/'
-    'user': postgressql_url.username,       # Extracts the username
-    'password': postgressql_url.password,   # Extracts the password
-    'host': postgressql_url.hostname,       # Extracts the host
-    'port': postgressql_url.port            # Extracts the port
+    'dbname': postgressql_url.path[1:],    
+    'user': postgressql_url.username,       
+    'password': postgressql_url.password,   
+    'host': postgressql_url.hostname,       
+    'port': postgressql_url.port          
 }
 
 def import_holidays_for_location(location_id, start_date, end_date):
