@@ -1,8 +1,27 @@
 # Convious Data Engineering Task
 
-## Introduction
+## Task 1
 
-This document outlines the considerations and design choices for building a system capable of ingesting, storing, and processing multiple types of events related to checkout activities. The goal is to ensure that the data is ready for analysis while accounting for updates and modifications to stored past events.
+### Objective
+
+Design a service which would give the holiday dates for a specific location and requested time range. The information is about holidays in different locations, given the list below:
+location_id country_code subdivision_code
+9415913d-fffa-41f9-9323-6d62e6100a31 NL NL-FL
+432d10d2-1a7c-4bbd-abd2-85075fb19c71 NL NL-GR
+a2d0d6fd-3a18-4f58-ac36-d2e56bf71a46 GB GB-NSM
+ab5df8c0-dfe7-4ca3-a9e4-c77f93e551a7 NL NL-ZH
+fdbf55b4-1b97-43a8-a096-a71d0b9d6940 GB GB-WLL
+d9a11093-b1a4-4c1a-9e2a-7cc951b55a32 NL NL-DR
+4f2c9d63-73b3-40f4-892d-136599854b87 NL NL-FR
+423ff765-83ac-472c-9ef7-b3a592696711 NL NL-UT
+5770db11-e7bf-4044-b54c-d49f69e947ec GB GB-SOM
+d70aed5a-3960-44fa-9c08-f725c2b03ce8 NL NL-NH
+e826584c-c32b-4ca1-835f-b7d7416f2958 NL NL-LI
+e40a0514-03e7-4d28-b7be-38c18a5ae73c GB GB-WRT
+4c8eb5ba-0140-4b48-924b-899112abe562 NL NL-GE
+
+
+I designed three Python scripts that work together to manage holiday data for various locations using PostgreSQL. My platform of choice for the PostgreSQL database is Railway, because it offers a free plan that is easy to deploy and scale and allows to create and manage PostgreSQL databases. Furthermore, everything including running the SQL queries is managed through Python. The scripts handle the creation of database tables, fetching and inserting holiday data from an external API, and querying the holiday data. Below is a detailed guide on setting up and using these scripts.
 
 ## Design Considerations
 
@@ -13,6 +32,42 @@ For most projects, separating scripts is recommended, especially if:
 - The project might scale or change over time.
 - There is a need to maintain a clear separation between schema management and data population.
 - Deployment in different environments where schema management is handled separately from data ingestion is planned.
+
+## Scripts Overview
+1. create_tables_and_indexes.py
+This script is responsible for creating the necessary tables (location_mapping and holidays) and indexes in the PostgreSQL database.
+
+Tables:
+
+location_mapping: Stores location information (country code, subdivision, etc.).
+holidays: Stores holiday data, including the holiday name, date, and versioning.
+Indexes:
+
+idx_country_subdivision: Speeds up queries on country_code and subdivision_code.
+idx_location_date: Improves the performance of queries filtering by location_id and date.
+idx_current_version: Ensures efficient retrieval of the latest holiday data versions.
+
+2. fetch_and_insert_holidays.py
+This script fetches holiday data from the HolidayAPI for predefined locations and inserts or updates the data in the PostgreSQL database.
+
+Functions:
+
+fetch_holiday_data(): Fetches holiday data for a specific location and year.
+upsert_location(): Inserts or updates location data in location_mapping.
+insert_holiday_data(): Inserts holiday data with versioning, ensuring the latest data is flagged as current_version.
+deactivate_location(): Marks locations that are no longer active.
+deactivate_removed_locations(): Deactivates locations that are no longer fetched in the current run.
+
+3. query_holidays.py
+This script allows you to query the holiday data stored in the PostgreSQL database for a given location_id and date range.
+
+Functions:
+
+import_holidays_for_location(): Queries the database for holidays within a specified date range for a given location, returning the results.
+
+## Functionality
+
+
 
 ## Task 2: System Design
 
