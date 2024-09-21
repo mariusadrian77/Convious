@@ -1,4 +1,4 @@
-### Objective
+# Objective
 
 Design a service which would give the holiday dates for a specific location and requested time range. The information is about holidays in different locations, given the list below:
 
