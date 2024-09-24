@@ -1,4 +1,4 @@
 # Environment variables file containing login credentials
-# .env
+.env
 /workspaces/Convious/__pycache__
 /workspaces/Convious/.pytest_cache
