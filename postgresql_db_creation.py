@@ -85,8 +85,7 @@ def create_tables_and_indexes():
 
     # Uncomment the lines below to drop the tables if necessary
     # cursor.execute("DROP TABLE IF EXISTS holidays;")
-    # cursor.execute("DROP TABLE IF EXISTS location_mapping;")
-    # cursor.execute("DROP TABLE IF EXISTS locations;")  
+    # cursor.execute("DROP TABLE IF EXISTS location_mapping;") 
 
     # # Commit the changes
     # conn.commit()
